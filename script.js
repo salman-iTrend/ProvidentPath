@@ -65,10 +65,25 @@ function calculateGrowth() {
   const employerRate = readPercentage(employerRateInput);
   const annualIncrease = readPercentage(increaseInput);
   const monthlyInterestRate = readPercentage(interestInput) / 12;
-  const currentAge = Math.min(75, Math.max(16, Math.round(readAmount(ageInput))));
-  const retirementAge = Math.min(100, Math.max(currentAge + 1, Math.round(readAmount(retirementInput))));
-  ageInput.value = String(currentAge);
-  retirementInput.value = String(retirementAge);
+  const currentAge = Number(ageInput.value);
+  const retirementAge = Number(retirementInput.value);
+  const validAges = Number.isInteger(currentAge)
+    && currentAge >= 16
+    && currentAge <= 99
+    && Number.isInteger(retirementAge)
+    && retirementAge > currentAge
+    && retirementAge <= 100;
+
+  if (!validAges) {
+    document.getElementById('projectionPeriod').textContent = 'Enter a current age from 16 to 99 and a later retirement age up to 100.';
+    ['projectedCorpus', 'openingBalance', 'employeeTotal', 'employerTotal', 'interestTotal'].forEach((id) => {
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('yearGrowthChart').replaceChildren();
+    document.getElementById('yearGrowthRows').replaceChildren();
+    return;
+  }
+
   const years = retirementAge - currentAge;
   const annualResults = [];
   let employeeTotal = 0;
