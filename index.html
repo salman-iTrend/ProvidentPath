@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f5ef" />
+    <title>Take-home Pay | EPF Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="page-header">
+        <p class="eyebrow">INDIA · MONTHLY ESTIMATE</p>
+        <h1>What lands in<br /><span>your account?</span></h1>
+        <p class="intro">Compare your monthly deductions now, and see how EPF savings could grow over time.</p>
+      </header>
+
+      <div class="tab-list" role="tablist" aria-label="EPF calculators">
+        <button class="tab-button is-active" id="takeHomeTab" type="button" role="tab" aria-selected="true" aria-controls="takeHomePanel" tabindex="0">Take-home pay</button>
+        <button class="tab-button" id="growthTab" type="button" role="tab" aria-selected="false" aria-controls="growthPanel" tabindex="-1">EPF growth</button>
+      </div>
+
+      <section id="takeHomePanel" role="tabpanel" aria-labelledby="takeHomeTab">
+      <div class="calculator-layout">
+        <section class="input-panel" aria-labelledby="inputs-heading">
+          <div class="section-heading">
+            <span class="step-mark">01</span>
+            <div>
+              <h2 id="inputs-heading">Your monthly pay</h2>
+              <p>Use the amounts from your salary structure.</p>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label class="field" for="grossSalary">
+              <span>Gross salary</span>
+              <span class="input-wrap"><span aria-hidden="true">₹</span><input id="grossSalary" type="number" min="0" step="500" value="30000" inputmode="decimal" /></span>
+              <small>Monthly cash salary before deductions</small>
+            </label>
+            <label class="field" for="basicSalary">
+              <span>Basic + DA</span>
+              <span class="input-wrap"><span aria-hidden="true">₹</span><input id="basicSalary" type="number" min="0" step="500" value="15000" inputmode="decimal" /></span>
+              <small>PF is calculated on this amount</small>
+            </label>
+            <label class="field" for="taxDeduction">
+              <span>Income-tax TDS</span>
+              <span class="input-wrap"><span aria-hidden="true">₹</span><input id="taxDeduction" type="number" min="0" step="100" value="0" inputmode="decimal" /></span>
+              <small>Monthly amount shown on your payslip</small>
+            </label>
+            <label class="field" for="otherDeductions">
+              <span>Other deductions</span>
+              <span class="input-wrap"><span aria-hidden="true">₹</span><input id="otherDeductions" type="number" min="0" step="100" value="0" inputmode="decimal" /></span>
+              <small>Professional tax, insurance, etc.</small>
+            </label>
+          </div>
+          <p class="input-note">Enter gross cash salary, not CTC. Employer PF is not subtracted again here.</p>
+        </section>
+
+        <section class="results-panel" aria-labelledby="results-heading" aria-live="polite">
+          <div class="section-heading results-heading">
+            <span class="step-mark">02</span>
+            <div>
+              <h2 id="results-heading">Your comparison</h2>
+              <p>Employee contribution at 12% of the PF wage.</p>
+            </div>
+          </div>
+
+          <div class="scenario-list">
+            <article class="scenario">
+              <div class="scenario-topline">
+                <div><span class="scenario-label">CAPPED PF</span><h3>PF wage up to ₹15,000</h3></div>
+                <span class="scenario-tag">₹15k cap</span>
+              </div>
+              <div class="scenario-numbers">
+                <div><span>Employee PF</span><strong id="cappedPf">₹0</strong></div>
+                <div class="take-home"><span>Estimated in-hand</span><strong id="cappedTakeHome">₹0</strong></div>
+              </div>
+            </article>
+
+            <article class="scenario scenario-full">
+              <div class="scenario-topline">
+                <div><span class="scenario-label">FULL BASIC PF</span><h3>PF on full Basic + DA</h3></div>
+                <span class="scenario-tag">12% of basic</span>
+              </div>
+              <div class="scenario-numbers">
+                <div><span>Employee PF</span><strong id="fullPf">₹0</strong></div>
+                <div class="take-home"><span>Estimated in-hand</span><strong id="fullTakeHome">₹0</strong></div>
+              </div>
+            </article>
+          </div>
+
+          <p class="difference-line">In-hand difference <strong id="takeHomeDifference">₹0</strong><span id="differenceDirection"></span></p>
+          <p class="tax-note" id="validationMessage" role="status">Tax uses the monthly TDS you enter; this calculator does not estimate income tax from gross salary.</p>
+        </section>
+      </div>
+      </section>
+
+      <section id="growthPanel" role="tabpanel" aria-labelledby="growthTab" hidden>
+        <div class="growth-layout">
+          <section class="growth-input-panel" aria-labelledby="growthInputsHeading">
+            <div class="section-heading">
+              <span class="step-mark">01</span>
+              <div>
+                <h2 id="growthInputsHeading">Set your assumptions</h2>
+                <p>Change any value to explore a scenario.</p>
+              </div>
+            </div>
+            <div class="field-grid growth-fields">
+              <label class="field" for="growthSalary">
+                <span>Monthly Basic + DA</span>
+                <span class="input-wrap"><span aria-hidden="true">₹</span><input id="growthSalary" type="number" min="0" step="500" value="15000" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="currentBalance">
+                <span>Current EPF balance</span>
+                <span class="input-wrap"><span aria-hidden="true">₹</span><input id="currentBalance" type="number" min="0" step="1000" value="0" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="employeeRate">
+                <span>Employee contribution</span>
+                <span class="input-wrap percent-wrap"><input id="employeeRate" type="number" min="0" max="100" step="0.1" value="12" inputmode="decimal" /><span aria-hidden="true">%</span></span>
+              </label>
+              <label class="field" for="employerRate">
+                <span>Employer EPF contribution</span>
+                <span class="input-wrap percent-wrap"><input id="employerRate" type="number" min="0" max="100" step="0.01" value="3.67" inputmode="decimal" /><span aria-hidden="true">%</span></span>
+              </label>
+              <label class="field" for="salaryIncrease">
+                <span>Annual salary increase</span>
+                <span class="input-wrap percent-wrap"><input id="salaryIncrease" type="number" min="0" max="100" step="0.5" value="5" inputmode="decimal" /><span aria-hidden="true">%</span></span>
+              </label>
+              <label class="field" for="interestRate">
+                <span>Expected annual interest</span>
+                <span class="input-wrap percent-wrap"><input id="interestRate" type="number" min="0" max="100" step="0.05" value="8.25" inputmode="decimal" /><span aria-hidden="true">%</span></span>
+              </label>
+              <label class="field" for="currentAge">
+                <span>Current age</span>
+                <span class="input-wrap"><input id="currentAge" type="number" min="16" max="75" step="1" value="30" inputmode="numeric" /><span class="input-suffix">years</span></span>
+              </label>
+              <label class="field" for="retirementAge">
+                <span>Retirement age</span>
+                <span class="input-wrap"><input id="retirementAge" type="number" min="17" max="100" step="1" value="58" inputmode="numeric" /><span class="input-suffix">years</span></span>
+              </label>
+            </div>
+            <p class="input-note">Employer EPF % is separate from the portion allocated to EPS pension. Salary increases are applied once per year.</p>
+          </section>
+
+          <section class="growth-results" aria-labelledby="growthResultsHeading" aria-live="polite">
+            <div class="section-heading results-heading">
+              <span class="step-mark">02</span>
+              <div>
+                <h2 id="growthResultsHeading">Your projected EPF</h2>
+                <p id="projectionPeriod">Estimated balance at retirement</p>
+              </div>
+            </div>
+            <div class="corpus-total">
+              <span>Projected EPF balance</span>
+              <strong id="projectedCorpus">₹0</strong>
+            </div>
+            <div class="growth-breakdown">
+              <div><span>Current balance</span><strong id="openingBalance">₹0</strong></div>
+              <div><span>Your contributions</span><strong id="employeeTotal">₹0</strong></div>
+              <div><span>Employer EPF</span><strong id="employerTotal">₹0</strong></div>
+              <div><span>Estimated interest</span><strong id="interestTotal">₹0</strong></div>
+            </div>
+            <div class="chart-heading"><h3>Balance by year</h3><span>Estimated closing balance</span></div>
+            <div id="yearGrowthChart" class="year-growth-chart" role="img" aria-label="Estimated EPF balance by year"></div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Age</th><th>Yearly contributions</th><th>Interest</th><th>Closing balance</th></tr></thead>
+                <tbody id="yearGrowthRows"></tbody>
+              </table>
+            </div>
+            <p class="tax-note">Illustration only: assumes a constant interest rate with monthly compounding and annual salary increases. Actual EPF interest, contributions, and rules may differ.</p>
+          </section>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <span>Illustrative monthly estimate</span>
+        <span>PF methods depend on your employer's policy and eligibility.</span>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
